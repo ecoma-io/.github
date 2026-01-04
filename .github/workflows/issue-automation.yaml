@@ -1,0 +1,79 @@
+name: Issue Automation
+
+on:
+  workflow_call:
+    inputs:
+      project_number:
+        required: false
+        default: 8
+        type: number
+    secrets:
+      ECOMA_APP_ID:
+        required: true
+      ECOMA_APP_KEY:
+        required: true
+
+jobs:
+  automation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ECOMA_APP_ID }}
+          private-key: ${{ secrets.ECOMA_APP_KEY }}
+
+      - name: Sync to Project
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+          ORG: ${{ github.repository_owner }}
+          PNUM: ${{ inputs.project_number }}
+          CONTENT_ID: ${{ github.event.issue.node_id || github.event.pull_request.node_id }}
+          IS_PR: ${{ github.event_name == 'pull_request' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # 1. Nếu là Pull Request, tự động gán chính mình vào PR
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "Assigning $ACTOR to PR #$PR_NUMBER..."
+            gh api -X POST /repos/$ORG/$REPO/issues/$PR_NUMBER/assignees -f "assignees[]=$ACTOR"
+
+            # 2. Tìm Linked Issues (fixes #123) để gán Assignee luôn cho Issue đó
+            # Sử dụng GraphQL để lấy ID của các Issue được link
+            linked_issues=$(gh api graphql -f query='
+              query($owner: String!, $repo: String!, $pr: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  pullRequest(number: $pr) {
+                    closingIssuesReferences(first: 5) {
+                      nodes { number id }
+                    }
+                  }
+                }
+              }' -f owner="$ORG" -f repo="$REPO" -F pr=$PR_NUMBER --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number')
+
+            for issue_num in $linked_issues; do
+              echo "Assigning $ACTOR to Linked Issue #$issue_num..."
+              gh api -X POST /repos/$ORG/$REPO/issues/$issue_num/assignees -f "assignees[]=$ACTOR"
+            done
+          fi
+
+          # 3. Thêm/Cập nhật vào Project Board (Logic cũ nhưng đảm bảo Assignee đã được cập nhật trước đó)
+          project_data=$(gh api graphql -f query='
+            query($org: String!, $number: Int!) {
+              organization(login: $org) {
+                projectV2(number: $number) { id }
+              }
+            }' -f org="$ORG" -F number=$PNUM)
+
+          PROJECT_ID=$(echo "$project_data" | jq -r '.data.organization.projectV2.id')
+
+          gh api graphql -f query='
+            mutation($project: ID!, $content: ID!) {
+              addProjectV2ItemById(input: {projectId: $project, contentId: $content}) {
+                item { id }
+              }
+            }' -f project="$PROJECT_ID" -f content="$CONTENT_ID"
+
+          echo "Done syncing assignee and project."
