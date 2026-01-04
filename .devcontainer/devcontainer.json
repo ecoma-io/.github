@@ -66,6 +66,13 @@
               "MCP_LOG_LEVEL": "info",
               "LOGS_DIR": "/var/log/git-mcp-server/"
             }
+          },
+          "memory": {
+            "command": "npx",
+            "args": [
+              "-y",
+              "@modelcontextprotocol/server-memory"
+            ]
           }
         }
       },
