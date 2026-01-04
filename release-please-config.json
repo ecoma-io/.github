@@ -1,0 +1,9 @@
+{
+  "separate-pull-requests": true,
+  "packages": {
+    ".devcontainer": {
+      "release-type": "go",
+      "package-name": "devcontainers"
+    }
+  }
+}
