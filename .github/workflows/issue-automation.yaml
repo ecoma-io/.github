@@ -1,0 +1,109 @@
+name: Issue Automation
+
+on:
+  workflow_call:
+    inputs:
+      project_number:
+        required: false
+        default: 8
+        type: number
+    secrets:
+      ECOMA_APP_ID:
+        required: true
+      ECOMA_APP_KEY:
+        required: true
+
+jobs:
+  automation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ECOMA_APP_ID }}
+          private-key: ${{ secrets.ECOMA_APP_KEY }}
+
+      - name: Sync to Project
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+          ORG: ${{ github.repository_owner }}
+          PNUM: ${{ inputs.project_number }}
+          CONTENT_ID: ${{ github.event.issue.node_id || github.event.pull_request.node_id }}
+          IS_PR: ${{ github.event_name == 'pull_request' }}
+          ACTOR: ${{ github.actor }}
+          PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
+          REPO_FULL: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          export GITHUB_TOKEN="$GH_TOKEN"
+
+          # Repo name (owner/repo -> repo)
+          REPO="${REPO_FULL#*/}"
+
+          echo "Starting sync for $CONTENT_ID to Project #$PNUM in $ORG..."
+
+          # If this is a PR, assign the actor to the PR and any linked issues.
+          if [ "$IS_PR" = "true" ] && [ "$PR_NUMBER" -ne 0 ]; then
+            echo "Assigning $ACTOR to PR #$PR_NUMBER..."
+            gh api -X POST /repos/$ORG/$REPO/issues/$PR_NUMBER/assignees -f "assignees[]=$ACTOR" || true
+
+            # Find linked issues (closing refs like "fixes #123")
+            linked_issues=$(gh api graphql -f query='\
+            query($owner: String!, $repo: String!, $pr: Int!) {\
+              repository(owner: $owner, name: $repo) {\
+                pullRequest(number: $pr) {\
+                  closingIssuesReferences(first: 5) {\
+                    nodes { number id }\
+                  }\
+                }\
+              }\
+            }' -f owner="$ORG" -f repo="$REPO" -F pr=$PR_NUMBER --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number' || echo "")
+
+            if [ -n "$linked_issues" ]; then
+              for issue_num in $linked_issues; do
+                echo "Assigning $ACTOR to Linked Issue #$issue_num..."
+                gh api -X POST /repos/$ORG/$REPO/issues/$issue_num/assignees -f "assignees[]=$ACTOR" || true
+              done
+            fi
+          fi
+
+          # 1) Query ProjectV2 id, Status field id and the "In Progress" option id
+          project_data=$(gh api graphql -f query='\
+          query($org: String!, $number: Int!) {\
+            organization(login: $org) {\
+              projectV2(number: $number) {\
+                id\
+                field(name: "Status") {\
+                  ... on ProjectV2SingleSelectField {\
+                    id\
+                    options { id name }\
+                  }\
+                }\
+              }\
+            }\
+          }' -f org="$ORG" -F number="$PNUM")
+
+          PROJECT_ID=$(echo "$project_data" | jq -r '.data.organization.projectV2.id')
+          FIELD_ID=$(echo "$project_data" | jq -r '.data.organization.projectV2.field.id')
+          OPTION_ID=$(echo "$project_data" | jq -r '.data.organization.projectV2.field.options[] | select(.name=="In Progress") | .id' || echo "")
+
+          if [ -z "$PROJECT_ID" ] || [ "$PROJECT_ID" = "null" ]; then
+            echo "::error::Failed to find ProjectV2 number $PNUM in org $ORG"
+            exit 1
+          fi
+
+          # 2) Add item (Issue/PR) to ProjectV2
+          item_id=$(gh api graphql -f query='\
+          mutation($project: ID!, $content: ID!) {\
+            addProjectV2ItemById(input: {projectId: $project, contentId: $content}) {\
+              item { id }\
+            }\
+          }' -f project="$PROJECT_ID" -f content="$CONTENT_ID" --jq '.data.addProjectV2ItemById.item.id') || echo ""
+
+          if [ -z "$item_id" ] || [ "$item_id" = "null" ]; then
+            echo "::warning::Failed to add item to project (might already exist)"
+          else
+            echo "Added item $item_id to project $PROJECT_ID"
+          fi
