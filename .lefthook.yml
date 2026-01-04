@@ -1,0 +1,20 @@
+pre-commit:
+  parallel: true
+  commands:
+    gitleaks:
+      run: gitleaks detect --no-banner
+    format:
+      glob: "*.{json,md,yml,yaml,toml,sh}"
+      run: dprint fmt {staged_files} && git add {staged_files} && dprint check {staged_files}
+    shellcheck:
+      glob: "*.{sh,bash}"
+      run: shellcheck {staged_files}
+commit-msg:
+  commands:
+    conform:
+      run: conform enforce --commit-msg-file {1}
+
+pre-push:
+  commands:
+    test:
+      run: echo "@TODO Need to implement tests before pushing!"
