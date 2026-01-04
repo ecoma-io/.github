@@ -1,0 +1,14 @@
+name: Local Project Sync
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+jobs:
+  self-sync:
+    uses: ./.github/workflows/project-automation.yml
+    with:
+      project_number: 1
+    secrets: inherit
