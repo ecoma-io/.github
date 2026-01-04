@@ -3,6 +3,7 @@
   "packages": {
     ".devcontainer": {
       "release-type": "go",
+      "changelog-path": ".devcontainer/CHANGELOG.md",
       "package-name": "devcontainers"
     }
   }
