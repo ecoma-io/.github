@@ -2,8 +2,6 @@
   "name": "Ecoma Github Profile",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "runArgs": ["--name=ecoma-profile", "--privileged"],
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
-  "workspaceFolder": "/workspace",
   "features": {
     "./features/omz": {
       "preInstalledPlugins": [
@@ -47,7 +45,7 @@
             "args": [
               "-y",
               "@modelcontextprotocol/server-filesystem",
-              "/workspace"
+              "."
             ]
           },
           "sequential-thinking": {
