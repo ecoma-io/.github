@@ -58,6 +58,13 @@ Common tools used across ecoma-io projects and typical usage:
       CI step to prevent nonconforming commits.
     - Quick fix: run `conform check` early and amend/squash commits to correct messages before
       pushing.
+- pants - build system & dependency tool: Pants (https://www.pantsbuild.org)
+  - Common commands:
+    - Format code: `./pants fmt ::`
+    - Lint: `./pants lint ::`
+    - Test: `./pants test ::`
+  - Notes: repositories typically pin a Pants version and may provide a `./pants` wrapper; consult
+    repo docs for project-specific usage.
 
 ## Basic PR checklist
 
