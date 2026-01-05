@@ -34,6 +34,7 @@ See `devcontainer-feature.json` for the full list; notable ones include:
 - `PIP_CACHE_DIR` for pip
 - `TF_PLUGIN_CACHE_DIR` for Terraform
 - `ANSIBLE_*` paths for Ansible roles/collections
+- `DPRINT_CACHE_DIR` for dprint
 
 Volume lifecycle and notes
 

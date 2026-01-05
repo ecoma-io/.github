@@ -13,7 +13,8 @@ mkdir -p $CACHE_DIR/go-build \
          $CACHE_DIR/pip \
          $CACHE_DIR/ansible/galaxy \
          $CACHE_DIR/ansible/roles \
-         $CACHE_DIR/ansible/collections
+         $CACHE_DIR/ansible/collections \
+         $CACHE_DIR/dprint
 
 
 chmod -R 777 $CACHE_DIR

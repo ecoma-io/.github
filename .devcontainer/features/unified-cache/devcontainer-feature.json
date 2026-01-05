@@ -12,7 +12,8 @@
     "PIP_CACHE_DIR": "/cache/pip",
     "ANSIBLE_GALAXY_CACHE_DIR": "/cache/ansible/galaxy",
     "ANSIBLE_ROLES_PATH": "/cache/ansible/roles",
-    "ANSIBLE_COLLECTIONS_PATH": "/cache/ansible/collections"
+    "ANSIBLE_COLLECTIONS_PATH": "/cache/ansible/collections",
+    "DPRINT_CACHE_DIR": "/cache/dprint"
   },
   "mounts": [
     {

@@ -57,7 +57,8 @@ across ecoma projects, with a strong focus on container, cloud, and CI/CD toolin
     dependencies to speed up development. See
     [.devcontainer/features/unified-cache/README.md](.devcontainer/features/unified-cache/README.md)
     for more details
-  - Support caching for npm, pnpm, yarn, terraform, ansible, python (pip), go (build & module)
+  - Support caching for npm, pnpm, yarn, terraform, ansible, python (pip), go (build & module),
+    dprint
 
 **Using prebuild image** Use image for devcontainer or create image base on
 `ghcr.io/ecoma-io/devcontainer` or `ghcr.io/ecoma-io/devops-devcontainer`
