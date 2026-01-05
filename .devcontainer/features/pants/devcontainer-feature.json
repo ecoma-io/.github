@@ -1,0 +1,7 @@
+{
+  "id": "pants",
+  "name": "Pants build system",
+  "description": "Setup and activate pants build system devcontainer feature",
+  "options": {
+  }
+}

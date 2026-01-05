@@ -1,0 +1,6 @@
+{
+  "id": "dockle",
+  "name": "Dockle",
+  "description": "Container Image Linter for Security, Helping build the Best-Practice Docker Image, Easy to start",
+  "options": {}
+}

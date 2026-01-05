@@ -1,0 +1,97 @@
+{
+  "name": "Ecoma Github Profile",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "runArgs": ["--name=ecoma-profile", "--privileged"],
+  "features": {
+    "./features/omz": {
+      "preInstalledPlugins": [
+        "git",
+        "git-auto-fetch"
+      ],
+      "customPlugins": [
+        "zsh-syntax-highlighting:https://github.com/zsh-users/zsh-syntax-highlighting.git",
+        "you-should-use:https://github.com/MichaelAquilina/zsh-you-should-use.git",
+        "zsh-autosuggestions:https://github.com/zsh-users/zsh-autosuggestions/archive/refs/tags/v0.7.1.zip"
+      ],
+      "deleteInactive": true
+    },
+    "./features/powerlevel10k": {
+      "deletePreinstalledThemes": true
+    },
+    "./features/pants": {},
+    "ghcr.io/jsburckhardt/devcontainer-features/gitleaks:1": {},
+    "ghcr.io/devcontainers/features/go:1": {},
+    "ghcr.io/azutake/devcontainer-features/go-packages-install:0": {
+      "PACKAGES": "github.com/evilmartians/lefthook/v2@latest,github.com/siderolabs/conform/cmd/conform@latest,mvdan.cc/sh/v3/cmd/shfmt@latest"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    },
+    "ghcr.io/devcontainers-extra/features/dprint-asdf:2": {},
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      "packages": "shellcheck,yq,jq,unzip,zip,gnupg,iputils-ping"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/terraform:1": {},
+    "ghcr.io/devcontainers-extra/features/ansible:2": {},
+    "ghcr.io/hspaans/devcontainer-features/ansible-lint:2": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+    "ghcr.io/rio/features/kustomize:1": {},
+    "ghcr.io/rio/features/k3d:1": {},
+    "ghcr.io/gickis/devcontainer-features/kubeseal:1": {},
+    "ghcr.io/dhoeric/features/hadolint:1": {},
+    "ghcr.io/devcontainers-extra/features/checkov:1": {},
+    "ghcr.io/dhoeric/features/trivy:1": {},
+    "ghcr.io/devcontainers-extra/features/dive:1": {},
+    "./features/dockle": {}
+  },
+  "postCreateCommand": "lefthook install",
+  "customizations": {
+    "vscode": {
+      "mcp": {
+        "servers": {
+          "filesystem": {
+            "command": "npx",
+            "args": [
+              "-y",
+              "@modelcontextprotocol/server-filesystem",
+              "/workspace"
+            ]
+          },
+          "sequential-thinking": {
+            "command": "npx",
+            "args": [
+              "-y",
+              "@modelcontextprotocol/server-sequential-thinking"
+            ]
+          },
+          "git": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+              "@cyanheads/git-mcp-server@latest"
+            ],
+            "env": {
+              "MCP_TRANSPORT_TYPE": "stdio",
+              "MCP_LOG_LEVEL": "info",
+              "LOGS_DIR": "/var/log/git-mcp-server/"
+            }
+          }
+        }
+      },
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "GitHub.vscode-pull-request-github",
+        "redhat.vscode-yaml",
+        "timonwong.shellcheck",
+        "foxundermoon.shell-format",
+        "dprint.dprint"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "dprint.dprint"
+      }
+    }
+  }
+}
