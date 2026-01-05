@@ -1,0 +1,101 @@
+name: Maintain Devcontainer Image
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 0" # Every Sunday at midnight
+
+env:
+  CI: true
+
+jobs:
+  maintenance:
+    name: Maintenance Devcontainer
+    runs-on: ubuntu-latest
+    concurrency:
+      group: maintain-devcontainer
+      cancel-in-progress: true
+    timeout-minutes: 120
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    steps:
+      - name: Find latest release tag (GitHub API)
+        id: get_latest_tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const latest = await github.rest.repos.getLatestRelease({ owner: 'ecoma-io', repo: 'devcontainer' });
+            return latest.data.tag_name;
+
+      - name: Parse and validate version
+        id: parse_version
+        run: |
+          set -euo pipefail
+          tag="${{ steps.get_latest_tag.outputs.result }}"
+          if [ -z "$tag" ] || [ "$tag" = "null" ]; then
+            echo "Failed to determine latest release tag"
+            exit 1
+          fi
+          # strip leading 'v' if present
+          version="${tag#v}"
+          IFS='.' read -r major minor patch <<< "$version"
+          major_minor="${major}.${minor}"
+          echo "Latest release tag: $tag"
+          echo "Parsed version: $version"
+          echo "Major: $major"
+          echo "Minor: $minor"
+          echo "Major.Minor: $major_minor"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "major=$major" >> "$GITHUB_OUTPUT"
+          echo "minor=$minor" >> "$GITHUB_OUTPUT"
+          echo "major_minor=$major_minor" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: refs/tags/v${{ steps.parse_version.outputs.version }}
+
+      - name: Build devcontainer and run tests
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ghcr.io/ecoma-io/devcontainer
+          push: never
+          runCmd: |
+            bash .devcontainer/tests/smoke.sh \
+              yq jq unzip zip git ping zsh \
+              go node npm yarn pnpm dprint docker \
+              shellcheck lefthook conform shfmt pants \
+              kubectl helm k3d minikube kustomize kubeseal \
+              terraform ansible ansible-lint
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build devcontainer and run tests
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ghcr.io/ecoma-io/devcontainer
+          imageTag: latest,${{ github.sha }},${{ steps.parse_version.outputs.version }},${{ steps.parse_version.outputs.major_minor }},${{ steps.parse_version.outputs.major }}
+          push: always
+
+      - name: Scan pushed image with Trivy (SARIF)
+        run: |
+          set -euo pipefail
+          IMAGE=ghcr.io/ecoma-io/devcontainer:${{ github.sha }}
+          OUT="$GITHUB_WORKSPACE/trivy.sarif"
+          if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
+            echo "Error: Image $IMAGE not found locally."
+            exit 1
+          fi
+          docker run --rm -v "$GITHUB_WORKSPACE":/workspace aquasecurity/trivy:latest image --format sarif --output /workspace/trivy.sarif "$IMAGE" || true
+
+      - name: Upload Trivy SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: $GITHUB_WORKSPACE/trivy.sarif
