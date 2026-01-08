@@ -60,6 +60,8 @@ jobs:
     needs: [integration-checks, static-checks]
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    outputs:
+      released: ${{ steps.pushed-image.outputs.released  }}
     permissions:
       contents: read
       packages: write
@@ -103,10 +105,16 @@ jobs:
           imageTag: latest,${{ github.sha }},${{ steps.release-please.outputs.version }},${{ steps.release-please.outputs.major }}.${{ steps.release-please.outputs.minor }},${{ steps.release-please.outputs.major }}
           push: always
 
+      - name: Output created image tags
+        if: steps.release-please.outputs.release_created == 'true'
+        id: pushed-image
+        shell: bash
+        run: echo "released=true" >> $GITHUB_OUTPUT
+
   security-scan:
     name: Security Scan
     needs: release
-    if: needs.release.result == 'success'
+    if: needs.release.outputs.released == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
