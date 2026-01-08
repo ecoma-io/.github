@@ -27,13 +27,7 @@ jobs:
           cacheFrom: ghcr.io/ecoma-io/devcontainer
           push: never
           runCmd: |
-            bash .devcontainer/tests/smoke.sh \
-              yq jq unzip zip git ping zsh \
-              go node npm yarn pnpm dprint docker \
-              shellcheck lefthook conform shfmt pants \
-              kubectl helm k3d minikube kustomize kubeseal \
-              terraform ansible ansible-lint \
-              actionlint golangci-lint
+            bash .devcontainer/tests/smoke-test.sh
 
   static-checks:
     name: Static Checks
