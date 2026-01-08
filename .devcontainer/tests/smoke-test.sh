@@ -9,3 +9,5 @@ bash "${CURRENT_DIR}/cmd-exits.sh" \
     kubectl helm k3d minikube kustomize kubeseal \
     terraform ansible ansible-lint \
     actionlint golangci-lint
+
+bash "${CURRENT_DIR}/cache.sh"
