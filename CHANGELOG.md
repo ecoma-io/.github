@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/ecoma-io/.github/compare/v1.2.0...v1.2.1) (2026-01-08)
+
+
+### Bug Fixes
+
+* **devcontainer:** add cache validation script, update permissions handle ([8f7dc10](https://github.com/ecoma-io/.github/commit/8f7dc10f376f70a53706cbd1eb73f7e6b7c1de83))
+
 ## [1.2.0](https://github.com/ecoma-io/.github/compare/v1.1.0...v1.2.0) (2026-01-08)
 
 
