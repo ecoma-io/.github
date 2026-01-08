@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/ecoma-io/.github/compare/v1.0.0...v1.1.0) (2026-01-08)
+
+
+### Features
+
+* **actionlint:** add actionlint linter for GitHub Actions workflows ([015d768](https://github.com/ecoma-io/.github/commit/015d7683dd2c9f0bf12e4c1e27b103034a3efb0a))
+
 ## 1.0.0 (2026-01-05)
 
 
