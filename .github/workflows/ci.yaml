@@ -33,7 +33,7 @@ jobs:
               shellcheck lefthook conform shfmt pants \
               kubectl helm k3d minikube kustomize kubeseal \
               terraform ansible ansible-lint \
-              actionlint
+              actionlint golangci-lint
 
   static-checks:
     name: Static Checks

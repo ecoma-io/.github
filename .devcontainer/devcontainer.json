@@ -24,7 +24,7 @@
     "ghcr.io/jsburckhardt/devcontainer-features/gitleaks:1": {},
     "ghcr.io/devcontainers/features/go:1": {},
     "ghcr.io/azutake/devcontainer-features/go-packages-install:0": {
-      "PACKAGES": "github.com/evilmartians/lefthook/v2@latest,github.com/siderolabs/conform/cmd/conform@latest,mvdan.cc/sh/v3/cmd/shfmt@latest"
+      "PACKAGES": "github.com/evilmartians/lefthook/v2@latest,github.com/siderolabs/conform/cmd/conform@latest,mvdan.cc/sh/v3/cmd/shfmt@latest,github.com/golangci/golangci-lint/cmd/golangci-lint@latest"
     },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"
