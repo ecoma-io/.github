@@ -1,0 +1,6 @@
+{
+  "id": "actionlint",
+  "name": "actionlint",
+  "description": "Install actionlint - GitHub Actions workflow linter",
+  "options": {}
+}

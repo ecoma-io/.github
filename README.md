@@ -42,6 +42,7 @@ across ecoma projects, with a strong focus on container, cloud, and CI/CD toolin
   - Trivy (container vulnerability scanner)
   - Dive (container image explorer)
   - Dockle (container image linter, custom feature)
+  - actionlint (GitHub Actions workflow linter, custom feature)
   - Gitleaks (secrets scanner)
   - Ansible & ansible-lint
   - Terraform
@@ -61,7 +62,7 @@ across ecoma projects, with a strong focus on container, cloud, and CI/CD toolin
     dprint
 
 **Using prebuild image** Use image for devcontainer or create image base on
-`ghcr.io/ecoma-io/devcontainer` or `ghcr.io/ecoma-io/devops-devcontainer`
+`ghcr.io/ecoma-io/devcontainer`
 
 ## Contributing
 

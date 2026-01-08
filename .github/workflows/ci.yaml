@@ -32,7 +32,8 @@ jobs:
               go node npm yarn pnpm dprint docker \
               shellcheck lefthook conform shfmt pants \
               kubectl helm k3d minikube kustomize kubeseal \
-              terraform ansible ansible-lint
+              terraform ansible ansible-lint \
+              actionlint
 
   static-checks:
     name: Static Checks
