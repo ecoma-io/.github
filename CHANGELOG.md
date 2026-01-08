@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/ecoma-io/.github/compare/v1.1.0...v1.2.0) (2026-01-08)
+
+
+### Features
+
+* **devcontainer:** add golangci-lint ([86cce78](https://github.com/ecoma-io/.github/commit/86cce787ef1b4282115a07d4d9f5e43f520aecdf))
+
 ## [1.1.0](https://github.com/ecoma-io/.github/compare/v1.0.0...v1.1.0) (2026-01-08)
 
 
