@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/ecoma-io/.github/compare/v1.2.1...v1.3.0) (2026-01-09)
+
+
+### Features
+
+* **docker-host:** add docker-host wrapper and installation script ([3964763](https://github.com/ecoma-io/.github/commit/3964763479dc0dc66265e177a5de648e91aeddad))
+
 ## [1.2.1](https://github.com/ecoma-io/.github/compare/v1.2.0...v1.2.1) (2026-01-08)
 
 
