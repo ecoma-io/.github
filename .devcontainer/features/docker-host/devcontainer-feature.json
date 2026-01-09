@@ -1,0 +1,15 @@
+{
+  "id": "docker-host",
+  "version": "1.0.0",
+  "name": "Docker Host Access",
+  "description": "Provides a docker-host wrapper command to interact with the host Docker daemon via unix:///var/run/docker.host.sock",
+  "documentationURL": "https://github.com/ecoma-io/.github/tree/main/profile/.devcontainer/features/docker-host",
+  "options": {},
+  "mounts": [
+    {
+      "source": "/var/run/docker.sock",
+      "target": "/var/run/docker.host.sock",
+      "type": "bind"
+    }
+  ]
+}

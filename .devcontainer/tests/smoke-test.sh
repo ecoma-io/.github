@@ -11,3 +11,5 @@ bash "${CURRENT_DIR}/cmd-exits.sh" \
     actionlint golangci-lint
 
 bash "${CURRENT_DIR}/cache.sh"
+
+bash "${CURRENT_DIR}/docker-host.sh"

@@ -21,6 +21,7 @@
     "./features/pants": {},
     "./features/unified-cache": {},
     "./features/actionlint": {},
+    "./features/docker-host": {},
     "ghcr.io/jsburckhardt/devcontainer-features/gitleaks:1": {},
     "ghcr.io/devcontainers/features/go:1": {},
     "ghcr.io/azutake/devcontainer-features/go-packages-install:0": {
