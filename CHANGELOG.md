@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/ecoma-io/.github/compare/v1.3.0...v1.3.1) (2026-01-11)
+
+
+### Bug Fixes
+
+* **devcontainer:** fixed go 1.24 for Pants build compatible ([0b0ca09](https://github.com/ecoma-io/.github/commit/0b0ca094b129877cb6e871c41dde6e608be84402))
+
 ## [1.3.0](https://github.com/ecoma-io/.github/compare/v1.2.1...v1.3.0) (2026-01-09)
 
 
