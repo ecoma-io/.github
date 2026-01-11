@@ -70,12 +70,7 @@ jobs:
           imageName: ghcr.io/ecoma-io/devcontainer
           push: never
           runCmd: |
-            bash .devcontainer/tests/smoke.sh \
-              yq jq unzip zip git ping zsh \
-              go node npm yarn pnpm dprint docker \
-              shellcheck lefthook conform shfmt pants \
-              kubectl helm k3d minikube kustomize kubeseal \
-              terraform ansible ansible-lint
+            bash .devcontainer/tests/smoke-test.sh
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
