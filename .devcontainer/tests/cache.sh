@@ -75,7 +75,8 @@ if command -v pnpm >/dev/null 2>&1; then
         if [ "$pnpm_path" = "/cache/pnpm" ]; then
             printf "✅ PNPM store path: %s\n" "$pnpm_path"
         else
-            printf "⚠️  PNPM store path is not /cache/pnpm (current: %s)\n" "$pnpm_path"
+            printf "❌  PNPM store path is not /cache/pnpm (current: %s)\n" "$pnpm_path"
+            exit 1
         fi
     fi
 fi
@@ -86,7 +87,8 @@ if command -v npm >/dev/null 2>&1; then
         if [ "$npm_cache" = "/cache/npm" ]; then
             printf "✅ NPM cache: %s\n" "$npm_cache"
         else
-            printf "⚠️  NPM cache is not /cache/npm (current: %s)\n" "$npm_cache"
+            printf "❌  NPM cache is not /cache/npm (current: %s)\n" "$npm_cache"
+            exit 1
         fi
     fi
 fi
@@ -97,7 +99,8 @@ if command -v yarn >/dev/null 2>&1; then
         if [ "$yarn_cache" = "/cache/yarn" ]; then
             printf "✅ Yarn cache: %s\n" "$yarn_cache"
         else
-            printf "⚠️  Yarn cache is not /cache/yarn (current: %s)\n" "$yarn_cache"
+            printf "❌  Yarn cache is not /cache/yarn (current: %s)\n" "$yarn_cache"
+            exit 1
         fi
     fi
 fi
