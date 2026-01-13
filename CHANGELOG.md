@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.2](https://github.com/ecoma-io/.github/compare/v1.3.1...v1.3.2) (2026-01-13)
+
+
+### Bug Fixes
+
+* **devcontainer:** fix unified caching for pnpm, yarn ([741d9b9](https://github.com/ecoma-io/.github/commit/741d9b91946ab80d7cf2276f719dd0bd3a34ae16))
+* **devcontainer:** remove pants, update golangci-lint v2, add task ([bf8e7b2](https://github.com/ecoma-io/.github/commit/bf8e7b26252fff6aec08f63ae1b7ecd55f7bfbbd))
+
 ## [1.3.1](https://github.com/ecoma-io/.github/compare/v1.3.0...v1.3.1) (2026-01-11)
 
 
