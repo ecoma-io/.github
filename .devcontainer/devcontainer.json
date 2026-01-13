@@ -18,7 +18,6 @@
     "./features/powerlevel10k": {
       "deletePreinstalledThemes": true
     },
-    "./features/pants": {},
     "./features/unified-cache": {},
     "./features/actionlint": {},
     "./features/docker-host": {},
@@ -27,7 +26,7 @@
       "version": "1.24"
     },
     "ghcr.io/azutake/devcontainer-features/go-packages-install:0": {
-      "PACKAGES": "github.com/evilmartians/lefthook/v2@latest,github.com/siderolabs/conform/cmd/conform@latest,mvdan.cc/sh/v3/cmd/shfmt@latest,github.com/golangci/golangci-lint/cmd/golangci-lint@latest"
+      "PACKAGES": "github.com/evilmartians/lefthook/v2@latest,github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest,mvdan.cc/sh/v3/cmd/shfmt@latest,github.com/golangci/golangci-lint/cmd/golangci-lint@lates,github.com/go-task/task/v3/cmd/task@latest"
     },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"
