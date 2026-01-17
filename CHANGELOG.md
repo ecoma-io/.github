@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/ecoma-io/.github/compare/v1.3.2...v1.4.0) (2026-01-17)
+
+
+### Features
+
+* **devcontainer:** update go to 1.25 ([f5f78a5](https://github.com/ecoma-io/.github/commit/f5f78a5e4ffb7e5ccda70c304080744cfdcd9028))
+
 ## [1.3.2](https://github.com/ecoma-io/.github/compare/v1.3.1...v1.3.2) (2026-01-13)
 
 
